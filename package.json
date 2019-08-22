@@ -8,7 +8,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/nuttawutmalee/react-native-bluetooth-serial-next.git"
+    "url": "git+https://github.com/igorfel/react-native-bluetooth-serial-next.git"
   },
   "keywords": [
     "bluetooth",

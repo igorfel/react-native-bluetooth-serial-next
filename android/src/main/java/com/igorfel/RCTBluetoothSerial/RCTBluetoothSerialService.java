@@ -1,4 +1,4 @@
-package com.nuttawutmalee.RCTBluetoothSerial;
+package com.igorfel.RCTBluetoothSerial;
 
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -14,7 +14,7 @@ import android.bluetooth.BluetoothSocket;
 import android.os.Build;
 import android.util.Log;
 
-import static com.nuttawutmalee.RCTBluetoothSerial.RCTBluetoothSerialPackage.TAG;
+import static com.igorfel.RCTBluetoothSerial.RCTBluetoothSerialPackage.TAG;
 
 /**
  * This class does all the work for setting up and managing Bluetooth

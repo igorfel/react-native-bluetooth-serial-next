@@ -1,6 +1,8 @@
-package com.nuttawutmalee.RCTBluetoothSerial;
+package com.igorfel.RCTBluetoothSerial;
 
 import java.lang.reflect.Method;
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
@@ -14,6 +16,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Build;
+import android.text.TextUtils;
 import android.util.Log;
 import android.util.Base64;
 
@@ -29,7 +32,7 @@ import com.facebook.react.bridge.WritableArray;
 import com.facebook.react.bridge.Promise;
 import com.facebook.react.modules.core.DeviceEventManagerModule;
 
-import static com.nuttawutmalee.RCTBluetoothSerial.RCTBluetoothSerialPackage.TAG;
+import static com.igorfel.RCTBluetoothSerial.RCTBluetoothSerialPackage.TAG;
 
 @SuppressWarnings("unused")
 public class RCTBluetoothSerialModule extends ReactContextBaseJavaModule
@@ -69,6 +72,8 @@ public class RCTBluetoothSerialModule extends ReactContextBaseJavaModule
 
     private HashMap<String, StringBuffer> mBuffers;
     private HashMap<String, String> mDelimiters;
+    private WritableArray dataArray = Arguments.createArray();
+    private int dataArraySize = 0;
 
     public RCTBluetoothSerialModule(ReactApplicationContext reactContext) {
         super(reactContext);

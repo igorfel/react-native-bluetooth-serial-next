@@ -1,4 +1,4 @@
-package com.nuttawutmalee.RCTBluetoothSerial;
+package com.igorfel.RCTBluetoothSerial;
 
 import java.util.ArrayList;
 import java.util.Collections;
