@@ -664,30 +664,27 @@ public class RCTBluetoothSerialModule extends ReactContextBaseJavaModule
      * @param data Message
      */
     void onData(String id, String data) {
-        if (mBuffers.containsKey(id)) {
-            StringBuffer buffer = mBuffers.get(id);
-            buffer.append(data);
-            mBuffers.put(id, buffer);
-        }
+        try {
+            Charset charset = StandardCharsets.ISO_8859_1;
+            byte[] b = data.getBytes(charset);
+            for (int i = 0; i < b.length; i++) {
+                if(dataArraySize == 0 && (int)b[i] != 0x7e) return;
+                dataArray.pushInt((int) b[i]);
+                dataArraySize++;
 
-        String delimiter = "";
+                if(dataArraySize == 14) {
+                    WritableMap dataParams = Arguments.createMap();
+                    dataParams.putString("id", id);
+                    dataParams.putString("data", data);
+                    dataParams.putArray("dataArray", dataArray);
 
-        if (mDelimiters.containsKey(id)) {
-            delimiter = mDelimiters.get(id);
-        }
-
-        String completeData = readUntil(id, delimiter);
-
-        if (completeData != null && completeData.length() > 0) {
-            WritableMap readParams = Arguments.createMap();
-            readParams.putString("id", id);
-            readParams.putString("data", completeData);
-            sendEvent(DEVICE_READ, readParams);
-
-            WritableMap dataParams = Arguments.createMap();
-            dataParams.putString("id", id);
-            dataParams.putString("data", completeData);
-            sendEvent(DATA_READ, dataParams);
+                    sendEvent(DATA_READ, dataParams);
+                    dataArray = Arguments.createArray();
+                    dataArraySize = 0;
+                }
+            }
+        } catch(Exception e) {
+            Log.d("ERROR:", e.getMessage());
         }
     }
 
