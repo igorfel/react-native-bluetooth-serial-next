@@ -72,6 +72,7 @@ public class RCTBluetoothSerialModule extends ReactContextBaseJavaModule
 
     private HashMap<String, StringBuffer> mBuffers;
     private HashMap<String, String> mDelimiters;
+    private HashMap<String, String> unpairedTemp = new HashMap<>();
     private WritableArray dataArray = Arguments.createArray();
     private int dataArraySize = 0;
 
@@ -905,8 +906,11 @@ public class RCTBluetoothSerialModule extends ReactContextBaseJavaModule
                     if (D)
                         Log.d(TAG, "Discovery extra device (device id: " + rawDevice.getAddress() + ")");
 
-                    WritableMap device = deviceToWritableMap(rawDevice);
-                    unpairedDevices.pushMap(device);
+                    if(!unpairedTemp.containsKey(rawDevice.getAddress())) {
+                        WritableMap device = deviceToWritableMap(rawDevice);
+                        unpairedDevices.pushMap(device);
+                        unpairedTemp.put(rawDevice.getAddress(), rawDevice.getName());
+                    }
                 } else if (BluetoothAdapter.ACTION_DISCOVERY_FINISHED.equals(action)) {
                     if (D)
                         Log.d(TAG, "Discovery finished");
@@ -914,6 +918,7 @@ public class RCTBluetoothSerialModule extends ReactContextBaseJavaModule
                     if (mDeviceDiscoveryPromise != null) {
                         mDeviceDiscoveryPromise.resolve(unpairedDevices);
                         mDeviceDiscoveryPromise = null;
+                        unpairedTemp.clear();
                     }
 
                     try {
